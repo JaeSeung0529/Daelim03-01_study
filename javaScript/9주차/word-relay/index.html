@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>끝말잇기</title>
+</head>
+<body>
+    <!-- <span>임시</span> -->
+    <div><span id ="order">1</span>번째 참가자</div>
+    <div>제시어 : <span id = "word"></span></div>
+    <input type="text">
+    <button class="btn">입력</button>
+    <form action="" method="get" id="form">
+        <input type="text" name="name" id = "name" required>
+        <input type="email" name="email" id="email" required>
+        <button name="button" type="submit">구독</button>
+    </form>
+    <!-- <button class="btn">처리</button>
+    <button class="btn">출력</button> -->
+    <script>
+        // const $button = document.querySelectorAll('button');
+        // console.log($button);
+
+        // const $order = document.querySelector('#order');
+        // console.log($order);
+
+        // const $$buttons = document.querySelectorAll('.btn');
+        // console.log($$buttons);
+
+        // const $span = document.querySelector('div span')
+        // console.log($span)
+
+        // const $order = document.querySelector('#order');
+        // console.log($order.textContent);
+
+        // const $div = document.querySelector('div')
+        // console.log($div);
+        // $div.innerHTML = '';
+
+        // const $button = document.querySelector('button');
+        // $button.innerHTML = '<b>굵게</b>'
+
+        // const $input = document.querySelector('input')
+        // $input.value = 123;
+        // $input.focus();
+        // console.log($input.value);
+
+        // const onClickButton = () => {
+        //     console.log('버튼 클릭')
+        // }
+
+        // const $button = document.querySelector('button');
+        // $button.addEventListener('click',onClickButton)
+        //  const $button = document.querySelector('button');
+        //  $button.addEventListener('click',() => { 
+        //     console.log("버튼 클릭")
+        //  })
+
+        //  const $input = document.querySelector('input');
+
+        //  const onInput = (event) =>{
+        //     console.log('글자 입력',event.targer.value)
+        //  }
+        //  $input.addEventListener('input', onInput)
+        //  $input.removeEventListener('input',onInput)
+       
+        // window.addEventListener('keyup',(event) => {
+        //     console.log('keydown',event);
+        // })
+
+        // window.removeEventListener('keyup',(event) => {
+        //     console.log('keydown',event);
+        // })
+
+        // window.addEventListener('mousemove',(event) => {
+        //     console.log('mousemeve',event)
+        // })
+        
+        // let start;
+        // window.addEventListener('mousedown',(event) => {
+        //     start = [event.clientX, event.clientY];
+        // })
+        // window.addEventListener('mouseup',(event) => {
+        //     const end = [event.clientX,event.clientY]
+        //     const diffx = end[0] - start[0];
+        //     const diffy = end[1] - start[1];
+        //     const isUnder45 = Math.abs(diffx) > Math.abs(diffy);
+        //     if(diffx < 0 && isUnder45){
+        //         console.log('오른쪽')
+        //     }else if(diffx > 0 && isUnder45){
+        //         console.log('왼쪽')
+        //     }else if(diffy  > 0 && !isUnder45){
+        //         console.log('아래쪽')
+        //     }else if(diffy < 0 && !isUnder45){
+        //         console.log('위쪽')
+        //     }
+        // })
+
+        // const $button = document.querySelector('button');
+        // $button.addEventListener('contextmenu',(event) => { 
+        //     event.preventDefault();//컨텍스트메뉴 x
+        //     console.log('우클릭');
+        // })
+
+    //    $button = document.querySelector('.btn')
+    // //    $button.className = 'btn1 btn2'
+    // //    $button.className = 'btn3 btn4'
+    //     $button.classList.add('btn1','btn2')
+    //     $button.classList.remove('btn2')
+    //     $button.classList.replace('btn1','btn3')
+    //    console.log($button)
+
+    // $div = document.querySelector('div')
+    // $div.backgroundColor = '#ff0000'
+
+    // console.log(document.querySelector('div').parentNode)
+    // console.log(document.querySelector('div').children)
+
+    // const $form = document.querySelector('#form');
+    // console.log($form[0])
+    // console.log($form[1])
+    // console.log($form[2])
+    // console.log($form.name)
+    // console.log($form.email)
+    // console.log($form.button)
+
+    // const $button = document.createElement('button');
+    // $button.classList.add('login');
+    // $button.style.fontSize = '15px';
+    // $button.textContent= '버튼';
+    // document.body.append($button);
+
+    // const $table = document.createElement('table');
+    // document.body.append($table);
+    // $table.border = 1;
+    // for(let i=0; i<4; i++){
+    //     const $tr = document.createElement('tr');
+    //     $table.append($tr);
+    //     for(let j=0; j<4; j++){
+    //         const $td = document.createElement('td');
+    //         $td.textContent ='칸';
+    //         $tr.append($td);
+    //     }
+    // }
+
+    // let number = Number(prompt("몇 명이 참가하나요?"))
+    // let right = confirm('확인 또는 취소')
+    // console.log(right)
+
+    const date = new Date()
+    console.log(date);
+    </script>
+</body>
+</html>
