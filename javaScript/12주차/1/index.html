@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>숫자야구</title>
+</head>
+<body>
+    <form id="form">
+        <input type="text" id ="input"/>
+        <button>확인</button>
+    </form>
+    <div id ="logs"></div>
+    <script>
+        const $input = document.querySelector('#input')
+        const $form = document.querySelector('#form')
+        const $logs = document.querySelector('#logs')
+        const numbers = [];
+        for(let i =1; n<=9; i++)
+        {
+            numbers.push(i);
+        }
+
+        const answers = []; 
+        for(let n=0; n<=3; n+=1){
+            const index = Math.floor(Math.random() * numbrs.length)
+            answers.push(numbers[index])
+            numbers.splice(index,1)
+        }
+        const tries = [];
+        function checkInput(input){
+            if(input.length != 4){
+                return alert('4자리 숫자를 입력하세요')
+            }
+            // 1123
+            if(new Set(input).size !== 4){
+                return alert('중복된 숫자를 입력했습니다.')
+            }
+            if(tries.includes(input)){
+                return alert("이미 시도한 값입니다.");
+            }
+            return true;
+        }
+        $form.addEventListener('submit',(event) => {
+            event.preventDefault()
+            const value = $input. value
+            $input.value = ''
+            const valid = checkInput(value);
+            return;
+        }
+        if(answers.join('') === value){
+            $logs.textContent = '홈런!!!'
+            return;
+        }
+        if(tries.length >= 9){
+            const msg = document.createTextNode()
+        }
+        })
+    </script>
+    
+</body>
+</html>
