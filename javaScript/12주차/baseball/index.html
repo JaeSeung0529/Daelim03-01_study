@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>숫자야구</title>
+</head>
+<body>
+    <form id="form">
+        <input type="text" id="input"/>
+        <button>확인</button>
+    </form>
+    <div id="logs"></div>
+    <script>
+        const $input = document.querySelector('#input');
+        const $form = document.querySelector('#form');
+        const $logs = document.querySelector('#logs');
+        const numbers = [];
+        for (let i = 1; i <= 9; i++) {
+            numbers.push(i);
+        }
+
+        const answers = [];
+        for (let n = 0; n < 4; n++) {
+            const index = Math.floor(Math.random() * numbers.length);
+            answers.push(numbers[index]);
+            numbers.splice(index, 1);
+        }
+        console.log(answers);
+
+        const tries = [];
+        let outs = 0; // 아웃 횟수를 저장하는 변수
+
+        function checkInput(input) {
+            if (input.length !== 4) {
+                return alert('4자리 숫자를 입력하세요');
+            }
+            if (new Set(input).size !== 4) {
+                return alert('중복된 숫자를 입력했습니다.');
+            }
+            if (tries.includes(input)) {
+                return alert("이미 시도한 값입니다.");
+            }
+            return true;
+        }
+
+        $form.addEventListener('submit', (event) => {
+            event.preventDefault();
+            const value = $input.value;
+            $input.value = "";
+            const valid = checkInput(value);
+            if (!valid) {
+                return;
+            }
+            if (answers.join('') === value) {
+                $logs.textContent = '홈런!!!';
+                return;
+            }
+            if (tries.length >= 9 || outs >= 3) { // 아웃이 3번 되면 패배 메시지를 표시
+                const msg = document.createTextNode(`패배! 정답은 ${answers.join('')}`);
+                $logs.appendChild(msg);
+                return;
+            }
+            let strike = 0;
+            let ball = 0;
+            for (let i = 0; i < answers.length; i++) {
+                const index = value.indexOf(String(answers[i]));
+                if (index > -1) {
+                    if (index === i) {
+                        strike += 1;
+                    } else {
+                        ball += 1;
+                    }
+                }
+            }
+            if (strike === 0 && ball === 0) { // 숫자를 하나도 맞추지 못한 경우
+                outs += 1;
+                $logs.append(`${value}: 아웃`, document.createElement('br'));
+                if (outs >= 3) { // 아웃이 3번 되면 패배 메시지를 표시
+                    const msg = document.createTextNode(`패배! 정답은 ${answers.join('')}`);
+                    $logs.appendChild(msg);
+                    return;
+                }
+            } else {
+                $logs.append(`${value}: ${strike} 스트라이크 ${ball} 볼`, document.createElement('br'));
+            }
+            tries.push(value);
+        });
+    </script>
+</body>
+</html>

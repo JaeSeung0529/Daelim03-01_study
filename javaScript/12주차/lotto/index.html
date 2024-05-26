@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>로또 추첨기</title>
+    <style>
+        .ball {
+            display: inline-block;
+            border: 1px solid black;
+            border-radius: 20px;
+            width: 40px;
+            height: 40px;
+            line-height: 40px;
+            font-size: 20px;
+            text-align: center;
+            margin-right: 20px;
+            color: white;
+        }
+        .red { background-color: red; }
+        .orange { background-color: orange; }
+        .yellow { background-color: yellow; color: black; }
+        .blue { background-color: blue; }
+        .green { background-color: green; }
+    </style>
+</head>
+<body>
+    <form id="form">
+        <input name="input" placeholder="숫자 6개를 쉼표로 구분해 입력하세요."/>
+        <button id="submit">추첨</button>
+    </form>
+    <div id="result">당첨 숫자: </div>
+    <div id="bonus">보너스 숫자: </div>
+    <script>
+        const $form = document.querySelector('#form');
+        const $result = document.querySelector('#result');
+        const $bonus = document.querySelector('#bonus');
+        const $submit = document.querySelector('#submit');
+        
+        function drawBall(number, $parent) {
+            const $ball = document.createElement('div');
+            $ball.className = 'ball';
+            $ball.textContent = number;
+
+            if (number < 10) {
+                $ball.classList.add('red');
+            } else if (number < 20) {
+                $ball.classList.add('orange');
+            } else if (number < 30) {
+                $ball.classList.add('yellow');
+            } else if (number < 40) {
+                $ball.classList.add('blue');
+            } else {
+                $ball.classList.add('green');
+            }
+
+            $parent.appendChild($ball);
+        }
+
+        const setTimeoutPromise = (ms) => new Promise((resolve) => {
+            setTimeout(resolve, ms);
+        });
+
+        $form.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            $submit.disabled = true; // 추첨 중에는 버튼 비활성화
+
+            $result.innerHTML = '당첨 숫자: '; // 이전 결과 초기화
+            $bonus.innerHTML = '보너스 숫자: '; // 이전 보너스 숫자 초기화
+
+            const string = event.target.input.value;
+            if (!string.trim()) {
+                $submit.disabled = false; // 입력 오류 시 버튼 활성화
+                return alert('숫자를 입력하세요.');
+            }
+            const myNumbers = string.split(',').map((v) => parseInt(v.trim()));
+            if (myNumbers.length !== 6) {
+                $submit.disabled = false; // 입력 오류 시 버튼 활성화
+                return alert('숫자를 6개 입력하세요.');
+            }
+            if (new Set(myNumbers).size !== 6) {
+                $submit.disabled = false; // 입력 오류 시 버튼 활성화
+                return alert('중복된 숫자를 입력했습니다.');
+            }
+            if (myNumbers.find((v) => v > 45 || v < 1)) {
+                $submit.disabled = false; // 입력 오류 시 버튼 활성화
+                return alert('1부터 45까지만 입력할 수 있습니다.');
+            }
+            const candidate = Array(45).fill().map((_, i) => i + 1);
+            const shuffle = [];
+            while (candidate.length > 0) {
+                const random = Math.floor(Math.random() * candidate.length);
+                const spliceArray = candidate.splice(random, 1);
+                const value = spliceArray[0];
+                shuffle.push(value);
+            }
+            console.log(shuffle);
+            const winBalls = shuffle.slice(0, 6).sort((a, b) => a - b);
+            const bonus = shuffle[6];
+            console.log(winBalls, bonus);
+            for (let i = 0; i < winBalls.length; i++) {
+                await setTimeoutPromise(1000);
+                console.log(winBalls[i], $result);
+                drawBall(winBalls[i], $result);
+            }
+            await setTimeoutPromise(1000);
+            drawBall(bonus, $bonus);
+            await setTimeoutPromise(0);
+            let count = 0;
+            myNumbers.forEach((my) => {
+                if (winBalls.includes(my)) {
+                    count++;
+                }
+            });
+            if (count === 6) {
+                alert('1등');
+            } else if (count === 5) {
+                if (myNumbers.includes(bonus)) {
+                    alert('2등!');
+                } else {
+                    alert('3등');
+                }
+            } else if (count === 4) {
+                alert('4등');
+            } else if (count === 3) {
+                alert('5등');
+            } else {
+                alert('로또 참 어렵죠');
+            }
+
+            $submit.disabled = false; // 추첨이 끝난 후 버튼 다시 활성화
+        });
+    </script>
+</body>
+</html>
