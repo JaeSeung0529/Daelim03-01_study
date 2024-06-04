@@ -82,6 +82,7 @@ const computerPlay = () => {
 
 // 셀 클릭 시 실행되는 콜백 함수
 const callback = (event) => {
+  if(turn == 'O'){  
   if (event.target.textContent !== '') { // 이미 채워진 칸인 경우
     console.log('빈칸이 아닙니다.');
     return;
@@ -102,15 +103,22 @@ const callback = (event) => {
     return;
   }
   turn = 'X'
+}
   // 턴 변경
 //   turn = turn === 'X' ? 'O' : 'X';
   
   if (turn === 'X') { // 컴퓨터의 턴인 경우
     computerPlay(); // 컴퓨터가 빈 칸 선택
-    const hasWinnerAfterComputerPlay = checkWinner(rows.flat()[8]); // 컴퓨터가 선택한 칸으로 승자 판단
-    if (hasWinnerAfterComputerPlay) { // 컴퓨터가 이긴 경우
+    const hasWinner = checkWinner(rows.flat()[8]); // 컴퓨터가 선택한 칸으로 승자 판단
+    if (hasWinner) { // 컴퓨터가 이긴 경우
       $result.textContent = `컴퓨터(X)가 승리!`;
+      console.log(`컴퓨터(X)가 승리!`);
       $table.removeEventListener('click', callback); // 이벤트 리스너 제거
+      return;
+    }
+    const draw = rows.flat().every((cell) => cell.textContent); // 무승부 확인
+    if (draw) { // 무승부인 경우
+      $result.textContent = `무승부`; 
       return;
     }
   }
