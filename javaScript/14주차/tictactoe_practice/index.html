@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>틱택토</title>
+<style>
+table {
+  border-collapse: collapse;
+}
+td {
+  border: 1px solid black;
+  width: 40px;
+  height: 40px;
+  text-align: center;
+}
+</style>
+</head>
+<body>    
+<script>
+const { body } = document;
+const $table = document.createElement('table');
+const $result = document.createElement('div'); // 결과창
+const rows = []; // 줄 담당 배열
+let turn = 'O'; // 차례 'O'부터 시작
+
+// 승자 판단 함수
+const checkWinner = (target) => {
+  const rowIndex = target.parentNode.rowIndex; // 클릭된 셀의 행 인덱스
+  const cellIndex = target.cellIndex; // 클릭된 셀의 열 인덱스
+  let hasWinner = false; // 승자 여부
+
+  // 가로줄 검사
+  if (
+    rows[rowIndex][0].textContent === turn && 
+    rows[rowIndex][1].textContent === turn && 
+    rows[rowIndex][2].textContent === turn
+  ) {
+    hasWinner = true;
+  }
+  // 세로줄 검사
+  if (
+    rows[0][cellIndex].textContent === turn && 
+    rows[1][cellIndex].textContent === turn && 
+    rows[2][cellIndex].textContent === turn
+  ) {
+    hasWinner = true;
+  }
+  // 대각선 검사
+  if (
+    rows[0][0].textContent === turn && 
+    rows[1][1].textContent === turn && 
+    rows[2][2].textContent === turn
+  ) {
+    hasWinner = true;
+  }
+  if (
+    rows[0][2].textContent === turn && 
+    rows[1][1].textContent === turn && 
+    rows[2][0].textContent === turn
+  ) {
+    hasWinner = true;
+  }
+  return hasWinner;
+};
+
+// 컴퓨터가 빈 칸 선택 함수
+const computerPlay = () => {
+  // 빈 칸들을 저장할 배열
+  const emptyCells = [];
+  // rows 배열을 순회하여 빈 칸을 찾음
+  rows.forEach((row) => {
+    row.forEach((cell) => {
+      if (!cell.textContent) { // 빈 칸인 경우
+        emptyCells.push(cell); // 빈 칸을 배열에 추가
+      }
+    });
+  });
+  // 빈 칸 중 무작위로 선택하여 X로 채움
+  const randomIndex = Math.floor(Math.random() * emptyCells.length);
+  emptyCells[randomIndex].textContent = turn;
+};
+
+// 셀 클릭 시 실행되는 콜백 함수
+const callback = (event) => {
+  if(turn == 'O'){  
+  if (event.target.textContent !== '') { // 이미 채워진 칸인 경우
+    console.log('빈칸이 아닙니다.');
+    return;
+  }
+  
+  event.target.textContent = turn; // 클릭된 셀에 차례에 해당하는 값(O 또는 X) 채움
+  
+  const hasWinner = checkWinner(event.target); // 승자 판단
+  if (hasWinner) { // 승자가 있는 경우
+    $result.textContent = `${turn}님이 승리!`;
+    $table.removeEventListener('click', callback); // 이벤트 리스너 제거
+    return;
+  }
+  
+  const draw = rows.flat().every((cell) => cell.textContent); // 무승부 확인
+  if (draw) { // 무승부인 경우
+    $result.textContent = `무승부`; 
+    return;
+  }
+  turn = 'X'
+}
+  // 턴 변경
+//   turn = turn === 'X' ? 'O' : 'X';
+  
+  if (turn === 'X') { // 컴퓨터의 턴인 경우
+    computerPlay(); // 컴퓨터가 빈 칸 선택
+    const hasWinner = checkWinner(rows.flat()[8]); // 컴퓨터가 선택한 칸으로 승자 판단
+    if (hasWinner) { // 컴퓨터가 이긴 경우
+      $result.textContent = `컴퓨터(X)가 승리!`;
+      console.log(`컴퓨터(X)가 승리!`);
+      $table.removeEventListener('click', callback); // 이벤트 리스너 제거
+      return;
+    }
+    const draw = rows.flat().every((cell) => cell.textContent); // 무승부 확인
+    if (draw) { // 무승부인 경우
+      $result.textContent = `무승부`; 
+      return;
+    }
+  }
+  turn = 'O'
+};
+
+// 테이블 생성
+for (let i = 1; i <= 3; i++) {
+  const $tr = document.createElement('tr'); // 행 생성
+  const cells = [];
+  for (let j = 1; j <= 3; j++) {
+    const $td = document.createElement('td'); // 셀 생성
+    cells.push($td);
+    $tr.appendChild($td);
+  }
+  rows.push(cells);
+  $table.appendChild($tr);
+  $table.addEventListener('click', callback); // 클릭 이벤트 리스너 등록
+}
+body.appendChild($table); // 테이블을 body에 추가
+body.appendChild($result); // 결과창을 body에 추가
+</script>
+</body>
+</html>
